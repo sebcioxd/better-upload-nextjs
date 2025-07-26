@@ -17,12 +17,15 @@ import {
 import { Input } from '@/components/ui/input';
 import { UploadDropzone } from './ui/upload-dropzone';
 import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
+
 const formSchema = z.object({
   folderName: z.string().min(1),
   files: z.array(z.instanceof(File)).min(1), // for Zod v4: z.array(z.file()).min(1),
 });
 
 export function FormUploader() {
+  const [hasUploaded, setHasUploaded] = useState(false);
   const {
     upload,
     control: uploadControl,
@@ -35,8 +38,12 @@ export function FormUploader() {
         message: error.message || 'An error occurred',
       });
     },
+    onUploadBegin: () => {
+      setHasUploaded(false);
+    },
     onUploadComplete: () => {
       form.reset();
+      setHasUploaded(true);
     }
   });
 
@@ -114,6 +121,7 @@ export function FormUploader() {
         <Button type="submit" disabled={isUploading}>
           {isUploading ? <><Loader2 className="w-4 h-4 animate-spin" /> Uploading... {(averageProgress * 100).toFixed(1)}%</> : "Submit"}
         </Button>
+        {hasUploaded && <p className='text-green-500'>Uploaded files successfully</p>}
       </form>
     </Form>
   );

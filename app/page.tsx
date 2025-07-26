@@ -7,9 +7,6 @@ export default function Home() {
       <div className="flex mt-10 items-center justify-center gap-4">
         <FormUploader />
       </div>
-      <div className="flex mt-10 items-center flex-col justify-center gap-4">
-        
-      </div>
     </div>
   );
 }
